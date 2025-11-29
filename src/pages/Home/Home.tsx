@@ -5,6 +5,8 @@ import { TaskList } from '../../components/TaskList/TaskList';
 import type { TaskType } from '../../types';
 import { homeStyle, mainStyle } from './Home.styles';
 
+
+
 export const Home = () => {
   const [taskList, setTaskList] = useState<TaskType[]>([
     { id: 1, title: 'タイトル1', detail: '詳細1' },
@@ -12,12 +14,17 @@ export const Home = () => {
     { id: 3, title: 'タイトル3', detail: '詳細3' },
   ]);
 
+  const onSubmit = (task:TaskType) =>{
+    setTaskList([...taskList,task]);
+  }
+
   return (
     <div style={homeStyle}>
       <main style={mainStyle}>
-        <RegisterForm />
-        <TaskList taskList={taskList} />
+        <RegisterForm onSubmit={onSubmit} />
+        {<TaskList taskList={taskList} /> }
       </main>
     </div>
   );
+
 };
