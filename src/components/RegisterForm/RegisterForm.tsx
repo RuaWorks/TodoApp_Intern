@@ -8,10 +8,15 @@ type Props ={
   onSubmit: (task: TaskType) => void;
 }
 
+
+
 export const RegisterForm = ({onSubmit} : Props) => {
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
   const [disabled,setDisabled] = useState<boolean>(true);
+
+  const titleLimitCharLength:number = 50;
+  const detailLimitCharLength :number = 200;
 
   /**
    * TODO：新規登録の作成
@@ -19,6 +24,16 @@ export const RegisterForm = ({onSubmit} : Props) => {
   // ここに追加ボタン押下時の処理を書く
   const onSubmitForm = (e: React.FormEvent) => {
     e.preventDefault()
+
+    if(title.length >= titleLimitCharLength){
+      alert(`タイトルの文字数が${titleLimitCharLength}以上です\n現在:${title.length}文字`);
+      return;
+    }
+    if(detail.length >= detailLimitCharLength){
+      alert(`本文の文字数が${titleLimitCharLength}以上です\n現在:${detail.length}文字`);
+      return;
+    }
+
     const newTask :TaskType = {
       id :Date.now(),
       title :title,
