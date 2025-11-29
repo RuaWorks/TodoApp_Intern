@@ -19,13 +19,14 @@ export const RegisterForm = ({onSubmit} : Props) => {
   // ここに追加ボタン押下時の処理を書く
   const onSubmitForm = (e: React.FormEvent) => {
     e.preventDefault()
-    //alert(`title : ${title}\n detail : ${detail}`);
     const newTask :TaskType = {
       id :Date.now(),
       title :title,
       detail :detail
      };
     onSubmit(newTask);
+    setTitle("");
+    setDetail("");
   };
 
   useEffect(() =>{
