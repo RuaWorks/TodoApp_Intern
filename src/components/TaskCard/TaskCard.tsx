@@ -6,9 +6,10 @@ import * as S from './TaskCard.styles';
 type Props = {
   task: TaskType;
   onSubmitEditTask: (newTask:TaskType) => void;
+  onSubmitDeleteTask :(id:number) => void
 };
 
-export const TaskCard = ({ task,onSubmitEditTask }: Props) => {
+export const TaskCard = ({ task,onSubmitEditTask,onSubmitDeleteTask }: Props) => {
   const { title, detail } = task;
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
@@ -64,6 +65,7 @@ export const TaskCard = ({ task,onSubmitEditTask }: Props) => {
    */
   const onClickDeleteButton = () => {
     // ここに削除ボタン押下時の処理
+    onSubmitDeleteTask(task.id);
   };
 
   // TODO：編集の作成
