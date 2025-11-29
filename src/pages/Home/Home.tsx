@@ -13,9 +13,9 @@ export const Home = () => {
     { id: 2, title: 'タイトル2', detail: '詳細2' },
     { id: 3, title: 'タイトル3', detail: '詳細3' },
   ]);
-
+  
   const onSubmit = (task:TaskType) =>{
-    setTaskList([...taskList,task]);
+    setTaskList((prev) => [...prev, task]);
   }
 
   return (
