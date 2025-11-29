@@ -14,15 +14,28 @@ export const Home = () => {
     { id: 3, title: 'タイトル3', detail: '詳細3' },
   ]);
   
-  const onSubmit = (task:TaskType) =>{
+  const onSubmitNewTask = (task:TaskType) =>{
     setTaskList((prev) => [...prev, task]);
   }
+
+  const onSubmitEditTask = (task:TaskType) =>{
+    setTaskList((prev) =>{
+      return prev.map(t =>{
+        if(t.id === task.id){
+          t.title = task.title;
+          t.detail = task.detail;
+        }
+        return t;
+      });
+    })
+  }
+
 
   return (
     <div style={homeStyle}>
       <main style={mainStyle}>
-        <RegisterForm onSubmit={onSubmit} />
-        {<TaskList taskList={taskList} /> }
+        <RegisterForm onSubmit={onSubmitNewTask} />
+        {<TaskList taskList={taskList} onSubmitEditTask={onSubmitEditTask}/> }
       </main>
     </div>
   );
