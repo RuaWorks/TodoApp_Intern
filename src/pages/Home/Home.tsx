@@ -30,12 +30,21 @@ export const Home = () => {
     })
   }
 
+  const onSubmitDeleteTask = (id:number) => {
+    const newTaskList :TaskType[] = [];
+    for(let t of taskList){
+      if(t.id === id){continue;}
+      newTaskList.push(t);  
+    }
+    setTaskList(newTaskList);
+  };
+
 
   return (
     <div style={homeStyle}>
       <main style={mainStyle}>
         <RegisterForm onSubmit={onSubmitNewTask} />
-        {<TaskList taskList={taskList} onSubmitEditTask={onSubmitEditTask}/> }
+        {<TaskList taskList={taskList} onSubmitEditTask={onSubmitEditTask} onSubmitDeleteTask={onSubmitDeleteTask}/> }
       </main>
     </div>
   );
