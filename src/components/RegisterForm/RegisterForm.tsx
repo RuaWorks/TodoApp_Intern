@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { actions, formCard, input, primaryBtn, textarea } from './RegisterForm.styles';
 import type { TaskType } from '../../types';
+import ValidateError from '../ValidateError/ValidateError';
 
 
 
@@ -14,6 +15,10 @@ export const RegisterForm = ({onSubmit} : Props) => {
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
   const [disabled,setDisabled] = useState<boolean>(true);
+  const [isExceedTitleCharCount,setIsExceedTitleCharCount] = useState(false);
+  const [isExceedDetailCharCount,setIsExceedDetailCharCount] = useState(false);
+  const [isEmptyTextExsist,setIsEmptyTextExsist] = useState(true);
+
 
   const titleLimitCharLength:number = 50;
   const detailLimitCharLength :number = 200;
@@ -24,15 +29,6 @@ export const RegisterForm = ({onSubmit} : Props) => {
   // ここに追加ボタン押下時の処理を書く
   const onSubmitForm = (e: React.FormEvent) => {
     e.preventDefault()
-
-    if(title.length >= titleLimitCharLength){
-      alert(`タイトルの文字数が${titleLimitCharLength}以上です\n現在:${title.length}文字`);
-      return;
-    }
-    if(detail.length >= detailLimitCharLength){
-      alert(`本文の文字数が${titleLimitCharLength}以上です\n現在:${detail.length}文字`);
-      return;
-    }
 
     const newTask :TaskType = {
       id :Date.now(),
@@ -45,23 +41,32 @@ export const RegisterForm = ({onSubmit} : Props) => {
   };
 
   useEffect(() =>{
-    if(title.length !== 0 && detail.length !== 0){
-      setDisabled(false);
-    }else{
-      setDisabled(true);
-    }
+    setIsEmptyTextExsist(title.length === 0 || detail.length === 0);
+    setIsExceedTitleCharCount(title.length >= titleLimitCharLength);
+    setIsExceedDetailCharCount(detail.length >= detailLimitCharLength);
+
+    console.log("isEmptyTextExsist", isEmptyTextExsist);
+    
+
   },[title,detail])
+
+  useEffect(() => {
+    setDisabled(isEmptyTextExsist || isExceedTitleCharCount || isExceedDetailCharCount);
+  }, [isEmptyTextExsist, isExceedTitleCharCount,isExceedDetailCharCount])
 
   return (
     <form style={formCard} onSubmit={(e) => onSubmitForm(e)}>
       <input style={input} type='text' value={title} placeholder='タイトルを入力' onChange={(e) => setTitle(e.target.value)} />
+      {isExceedTitleCharCount && <ValidateError message='文字数が多すぎます'/>}
       <br />
       <textarea style={textarea} value={detail} placeholder='Todoを入力' onChange={(e) => setDetail(e.target.value)} rows={7}></textarea>
+      {isExceedDetailCharCount && <ValidateError message='文字数が多すぎます'/>}
       <div style={actions}>
         <button style={primaryBtn(disabled)} type='submit' disabled={disabled}>
           追加
         </button>
       </div>
+      {isEmptyTextExsist && <ValidateError message='空欄があります'/>}
     </form>
   );
 };
